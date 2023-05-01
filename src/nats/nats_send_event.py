@@ -61,7 +61,6 @@ async def init(
     async def cb(msg):
         msg_data = msg.data
         snappy_msg = snappy.decompress(msg_data)
-        print(snappy_msg)
 
     nc = await init_natsio(
         server=server,
@@ -73,8 +72,6 @@ async def init(
 
     json_data = json2dict(direct_path=data_path)
     data = snappy.compress(data=json.dumps(json_data))
-
-    print(data)
 
     try:
         msg = await nc.request(subject=topic, payload=data, cb=cb, timeout=10)
@@ -94,7 +91,6 @@ def run(
     topic,
     data_path,
 ) -> None:
-    print(topic)
     asyncio.run(
         init(
             server,

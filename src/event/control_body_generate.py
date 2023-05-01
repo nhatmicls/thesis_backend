@@ -26,7 +26,7 @@ def device_nats_body_generate(
     body["data"].update({"SN": SN})
     body["data"].update({"type_register": type_register})
     body["data"].update({"register": register})
-    body["data"].update({"data": data})
+    body["data"].update({"new_data": data})
 
     return body
 
