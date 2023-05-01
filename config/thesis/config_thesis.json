@@ -1,0 +1,24 @@
+{
+    "device_SN": {
+        "device_0": {
+            "SN": "123",
+            "Mn": "ESP_MODBUS",
+            "Md": "esp",
+            "host": "192.168.1.11",
+            "port": 502,
+            "client_ID": 1,
+            "protocol": "TCP"
+        }
+    },
+    "Site_info": {
+        "tenant": "HCMC",
+        "location": "HCMUT"
+    },
+    "message_buffer": {
+        "location": "message-buffer",
+        "memory_length": 100000
+    },
+    "Natsio_servers_addr": "nats://pifclub.ddns.net:4222",
+    "time_out": 10,
+    "topic": "thesis.hcmut.data-upload.123"
+}

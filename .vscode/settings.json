@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/nats",
+        "./src/handle",
+        "./src/event/modules",
+        "./src/event"
+    ]
+}

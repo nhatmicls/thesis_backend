@@ -1,0 +1,31 @@
+{
+    "points": {
+        "input_registers": {
+            "read": {
+                "register": [
+                    "adc_1",
+                    "adc_2",
+                    "adc_3",
+                    "adc_4",
+                    "adc_5",
+                    "adc_6",
+                    "button_1",
+                    "button_2",
+                    "button_3",
+                    "button_4",
+                    "button_5",
+                    "button_6"
+                ]
+            }
+        },
+        "holding_registers": {
+            "read": {
+                "register": [
+                    "led_1",
+                    "led_2",
+                    "led_3"
+                ]
+            }
+        }
+    }
+}

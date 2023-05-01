@@ -1,0 +1,44 @@
+version: '3.1'
+
+services:
+  backend-dev:
+    image: backend_dev:latest
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    privileged: true
+    container_name: backend-dev
+    ports:
+      - 5000:5000
+    volumes:
+      - ./../:/thesis/backend
+    profiles:
+      - dev
+  backend-test:
+    image: backend_test:latest
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    privileged: true
+    container_name: backend-test
+    ports:
+      - 5000:5000
+    volumes:
+      - ~/cert:/cert
+      - ~/creds:/creds
+    environment:
+      - ContainerName=backend-test
+    profiles:
+      - test
+  backend-prod:
+    image: backend_release:latest
+    restart: always
+    privileged: true
+    container_name: backendprod
+    ports:
+      - 5000:5000
+    volumes:
+      - ~/cert:/cert
+      - ~/creds:/creds
+    environment:
+      - ContainerName=backend-prod
+    profiles:
+      - prod
