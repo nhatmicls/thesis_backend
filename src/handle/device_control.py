@@ -1,34 +1,25 @@
-import asyncio
 import os
 import json
 import sys
 
-import snappy
 import json
 
 from pathlib import Path
 
 from typing import *
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, abort
 
 parent_dir_path = str(Path(__file__).resolve().parents[2])
 sys.path.append(parent_dir_path + "/src/event")
 sys.path.append(parent_dir_path + "/src/event/modules")
+sys.path.append(parent_dir_path + "/src/handle/modules")
 sys.path.append(parent_dir_path + "/src/nats")
 
+from preflight_check import cors_preflight_response
 from control_body_generate import body_generate
 from FileIO import dict2json
 
 control_bp = Blueprint("control_bp", __name__)
-event_loop = asyncio.new_event_loop()
-
-
-def cors_preflight_response():
-    response = Response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Headers", "*")
-    response.headers.add("Access-Control-Allow-Methods", "*")
-    return response
 
 
 def post_control(body):
@@ -59,7 +50,7 @@ def post_control(body):
 
 
 def get_control():
-    return "<p>c</p>"
+    return cors_preflight_response()
 
 
 @control_bp.route("/", methods=["GET", "POST", "OPTIONS"])
@@ -68,3 +59,7 @@ def control():
         return cors_preflight_response()
     elif request.method == "POST":
         return post_control(request.data)
+    elif request.method == "GET":
+        return get_control()
+    else:
+        abort(404)

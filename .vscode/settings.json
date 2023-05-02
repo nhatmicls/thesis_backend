@@ -3,6 +3,8 @@
         "./src/nats",
         "./src/handle",
         "./src/event/modules",
-        "./src/event"
+        "./src/event",
+        "./src/handle/modules",
+        "./src/env"
     ]
 }
