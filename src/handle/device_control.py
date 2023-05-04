@@ -14,10 +14,11 @@ sys.path.append(parent_dir_path + "/src/event")
 sys.path.append(parent_dir_path + "/src/event/modules")
 sys.path.append(parent_dir_path + "/src/handle/modules")
 sys.path.append(parent_dir_path + "/src/nats")
+sys.path.append(parent_dir_path + "/src/env")
 
 from preflight_check import cors_preflight_response
 from control_body_generate import body_generate
-from FileIO import dict2json
+from backend_env import CurrentEnv
 from nats_control_event import control_signal
 
 control_bp = Blueprint("control_bp", __name__)
@@ -34,12 +35,12 @@ def post_control(body):
     )
 
     nats_respond = control_signal(
-        server="nats://pifclub.ddns.net:4222/",
-        user_credentials_path="./creds/pc.creds",
-        cert_file_path="./cert/thesis/client.crt",
-        key_file_path="./cert/thesis/client.key",
-        rootCA_file_path="./cert/thesis/rootCA.crt",
-        topic="thesis.hcmut.data-download.>",
+        server=CurrentEnv.NatsioEndpoints,
+        user_credentials_path=CurrentEnv.UserCredsPath,
+        cert_file_path=CurrentEnv.CertTLSPath,
+        key_file_path=CurrentEnv.KeyTLSPath,
+        rootCA_file_path=CurrentEnv.RootCATLSPath,
+        topic=CurrentEnv.NatsioTopics,
         data=new_data,
     )
 

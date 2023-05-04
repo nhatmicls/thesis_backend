@@ -20,7 +20,7 @@ from preflight_check import cors_preflight_response
 from backend_env import CurrentEnv
 
 database_handle_bp = Blueprint("database_handle_bp", __name__)
-database_url = CurrentEnv.endpoint_database
+database_url = CurrentEnv.DatabaseEndpoint
 
 
 def post_database(request_data: Request):
