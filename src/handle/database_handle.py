@@ -41,7 +41,6 @@ def post_database(request_data: Request):
     response.headers.add("Access-Control-Allow-Headers", "*")
     response.headers.add("Access-Control-Allow-Methods", "*")
     return response
-    # return jsonify(return_data.text)
 
 
 def get_database(request_data: Request):

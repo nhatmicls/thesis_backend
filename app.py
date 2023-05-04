@@ -20,7 +20,12 @@ app.register_blueprint(backend_bp, url_prefix="/")
 
 
 @app.get("/test")
-def test():
+def test_site():
+    return "<p>a</p>"
+
+
+@app.get("/")
+def homepage():
     return "<p>a</p>"
 
 

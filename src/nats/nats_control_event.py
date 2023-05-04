@@ -1,6 +1,8 @@
 import asyncio
 from urllib import parse
+from nats.aio.client import Msg
 from nats.aio.client import Client as NATS
+from nats.errors import TimeoutError, NoRespondersError
 import json
 import ssl
 import argparse
@@ -56,12 +58,8 @@ async def init(
     key_file_path: str,
     rootCA_file_path: str,
     topic: str,
-    data_path: str,
+    data: str,
 ):
-    async def cb(msg):
-        msg_data = msg.data
-        snappy_msg = snappy.decompress(msg_data)
-
     nc = await init_natsio(
         server=server,
         user_credentials_path=user_credentials_path,
@@ -70,57 +68,43 @@ async def init(
         rootCA_file_path=rootCA_file_path,
     )
 
-    json_data = json2dict(direct_path=data_path)
-    data = snappy.compress(data=json.dumps(json_data))
+    # json_data = json2dict(direct_path=data)
+    data = snappy.compress(data=json.dumps(data))
 
     try:
-        msg = await nc.request(subject=topic, payload=data, cb=cb, timeout=10)
-        print(msg)
-    except asyncio.TimeoutError:
+        msg = await nc.request(subject=topic, payload=data, timeout=1)
+        respond = snappy.decompress(msg.data)
+
+        await nc.close()
+
+        if respond == b"ok":
+            return 1
+    except TimeoutError:
         print("Timed out waiting for response")
+    except NoRespondersError:
+        print("No responser found")
 
     await nc.close()
+    return 0
 
 
-def run(
-    server,
-    user_credentials_path,
-    cert_file_path,
-    key_file_path,
-    rootCA_file_path,
-    topic,
-    data_path,
+def control_signal(
+    server: str,
+    user_credentials_path: str,
+    cert_file_path: str,
+    key_file_path: str,
+    rootCA_file_path: str,
+    topic: str,
+    data: str,
 ) -> None:
-    asyncio.run(
+    return asyncio.run(
         init(
-            server,
-            user_credentials_path,
-            cert_file_path,
-            key_file_path,
-            rootCA_file_path,
-            topic,
-            data_path,
+            server=server,
+            user_credentials_path=user_credentials_path,
+            cert_file_path=cert_file_path,
+            key_file_path=key_file_path,
+            rootCA_file_path=rootCA_file_path,
+            topic=topic,
+            data=data,
         )
     )
-
-
-parser = argparse.ArgumentParser(description="Script so useful.")
-parser.add_argument("-s", "--server", type=str)
-parser.add_argument("-C", "--user_credentials_path", type=str)
-parser.add_argument("-c", "--cert_file_path", type=str)
-parser.add_argument("-k", "--key_file_path", type=str)
-parser.add_argument("-r", "--rootCA_file_path", type=str)
-parser.add_argument("-t", "--topic", type=str)
-parser.add_argument("-d", "--data_path", type=str)
-
-args = parser.parse_args()
-
-run(
-    server=args.server,
-    user_credentials_path=args.user_credentials_path,
-    cert_file_path=args.cert_file_path,
-    key_file_path=args.key_file_path,
-    rootCA_file_path=args.rootCA_file_path,
-    topic=args.topic,
-    data_path=args.data_path,
-)
