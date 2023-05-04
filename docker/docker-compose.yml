@@ -22,10 +22,20 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ~/cert:/cert
-      - ~/creds:/creds
+      - ~/thesis_server_config/natsio_config:/etc/natsio_config
+      - ~/thesis_logs/natsio:/var/log
+      - ~/thesis_server_config/certs:/etc/certs
+      - ~/thesis_server_config/cred:/etc/cred
     environment:
-      - ContainerName=backend-test
+      - ContainerName=backend-prod
+      - RunEnvBackend=PROD
+      - DatabaseEndpoint=http://prometheus:9090/api/v1/write
+      - NatsioEndpoints=nats://nats:4222
+      - NatsioTopics=thesis.hcmut.data-upload.>
+      - UserCredsPath=/etc/cred/pc.creds
+      - KeyTLSPath=/etc/cred/client.key
+      - CertTLSPath=/etc/cred/client.crt
+      - RootCATLSPath=/etc/cred/rootCA.crt
     profiles:
       - test
   backend-prod:
@@ -36,9 +46,19 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ~/cert:/cert
-      - ~/creds:/creds
+      - ~/thesis_server_config/natsio_config:/etc/natsio_config
+      - ~/thesis_logs/natsio:/var/log
+      - ~/thesis_server_config/certs:/etc/certs
+      - ~/thesis_server_config/cred:/etc/cred
     environment:
       - ContainerName=backend-prod
+      - RunEnvBackend=PROD
+      - DatabaseEndpoint=http://prometheus:9090/api/v1/write
+      - NatsioEndpoints=nats://nats:4222
+      - NatsioTopics=thesis.hcmut.data-upload.>
+      - UserCredsPath=/etc/cred/pc.creds
+      - KeyTLSPath=/etc/cred/client.key
+      - CertTLSPath=/etc/cred/client.crt
+      - RootCATLSPath=/etc/cred/rootCA.crt
     profiles:
       - prod

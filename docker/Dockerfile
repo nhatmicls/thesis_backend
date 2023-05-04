@@ -36,7 +36,9 @@ WORKDIR /thesis
 RUN apk add --update --no-cache py3-pip
 
 RUN apk add py3-virtualenv 
-RUN apk add python3-dev build-base py3-numpy linux-headers py3-dbus
+RUN apk add python3-dev build-base py3-numpy linux-headers py3-dbus 
+RUN apk add cairo py3-cairo cairo-dev gobject-introspection py3-gobject3 gobject-introspection-dev
+RUN apk add dbus-glib-dev
 
 #Install requirement for snappy C
 RUN apk add snappy-dev
@@ -57,7 +59,7 @@ FROM main as test
 RUN apk update && \
     pip install -U black
 
-ADD ./docker/requirements.txt /thesis/backend/
+ADD ./requirements.txt /thesis/backend/
 
 # Download and install pip package
 RUN pip install --upgrade pip
@@ -69,7 +71,7 @@ ADD ./ /thesis/backend/
 WORKDIR /thesis/backend
 
 FROM main as prod
-ADD ./docker/requirements.txt /thesis/backend/
+ADD ./requirements.txt /thesis/backend/
 
 # Download and install pip package
 RUN pip install --upgrade pip
