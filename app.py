@@ -12,10 +12,12 @@ sys.path.append(parent_dir_path + "/src/handle")
 from device_control import control_bp
 from database_handle import database_handle_bp
 from backend_test import backend_bp
+from alert_handle import alert_handle_bp
 
 app = Flask(__name__)
 app.register_blueprint(control_bp, url_prefix="/control")
 app.register_blueprint(database_handle_bp, url_prefix="/database")
+app.register_blueprint(alert_handle_bp, url_prefix="/webhook")
 app.register_blueprint(backend_bp, url_prefix="/")
 
 

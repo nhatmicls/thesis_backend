@@ -27,10 +27,10 @@ elif [[ "$release" == "1" ]]; then
     target="--target prod"
 elif [[ "$release" == "2" ]]; then
     name="backend_test"
-    target="--target dev"
+    target="--target test"
 elif [[ "$release" == "3" ]]; then
     name="backend_test_alt"
-    target="--target dev"
+    target="--target test"
 fi
 
 name_file="./output/${name}.tar"

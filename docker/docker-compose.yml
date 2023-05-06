@@ -29,13 +29,13 @@ services:
     environment:
       - ContainerName=backend-prod
       - RunEnvBackend=PROD
-      - DatabaseEndpoint=http://prometheus:9090/api/v1/write
+      - DatabaseEndpoint=http://prometheus:9090/api/v1/query
       - NatsioEndpoints=nats://nats:4222
       - NatsioTopics=thesis.hcmut.data-upload.>
       - UserCredsPath=/etc/cred/pc.creds
-      - KeyTLSPath=/etc/cred/client.key
-      - CertTLSPath=/etc/cred/client.crt
-      - RootCATLSPath=/etc/cred/rootCA.crt
+      - KeyTLSPath=/etc/certs/client.key
+      - CertTLSPath=/etc/certs/client.crt
+      - RootCATLSPath=/etc/certs/rootCA.crt
     profiles:
       - test
   backend-prod:
@@ -53,12 +53,12 @@ services:
     environment:
       - ContainerName=backend-prod
       - RunEnvBackend=PROD
-      - DatabaseEndpoint=http://prometheus:9090/api/v1/write
+      - DatabaseEndpoint=http://prometheus:9090/api/v1/query
       - NatsioEndpoints=nats://nats:4222
       - NatsioTopics=thesis.hcmut.data-upload.>
       - UserCredsPath=/etc/cred/pc.creds
-      - KeyTLSPath=/etc/cred/client.key
-      - CertTLSPath=/etc/cred/client.crt
-      - RootCATLSPath=/etc/cred/rootCA.crt
+      - KeyTLSPath=/etc/certs/client.key
+      - CertTLSPath=/etc/certs/client.crt
+      - RootCATLSPath=/etc/certs/rootCA.crt
     profiles:
       - prod
